@@ -30,10 +30,16 @@ def read_obo(path_or_file):
         **header)
 
     edge_tuples = list()
-
+    obsolete_map = dict()
+    
     for term in terms:
         is_obsolete = term.get('is_obsolete', 'false') == 'true'
         if is_obsolete:
+            try:
+                obsolete_map[term['id']] = term['replaced_by']
+            except:
+                new_term = term.get('consider',['NO_TERM'])
+                obsolete_map[term['id']] = new_term[0]
             continue
         term_id = term.pop('id')
         graph.add_node(term_id, **term)
@@ -168,8 +174,8 @@ term_tag_singularity = {
     'disjoint_from': False,
     'relationship': False,
     'is_obsolete': True,
-    'replaced_by': False,
-    'consider': False,
+    'replaced_by': True,
+    'consider': True,
     'use_term': False,  # deprecated
     'builtin': True,
     # Additional tags in 1.4:
