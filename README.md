@@ -24,13 +24,15 @@ OBO files can be read from a path, URL, or open file handle.
 Compression is inferred from the path's extension.
 See example usage below:
 
+read_obo return network graph representation of the ontology and a dictionary which map obsolete IDs to new IDs based on the replaced_by / consider annotations
+
 ```python
 import networkx
 import obonet
 
 # Read the taxrank ontology
 url = 'https://github.com/dhimmel/obonet/raw/master/tests/data/taxrank.obo'
-graph = obonet.read_obo(url)
+graph, obsolete_map = obonet.read_obo(url)
 
 # Or read the xz-compressed taxrank ontology
 url = 'https://github.com/dhimmel/obonet/raw/master/tests/data/taxrank.obo.xz'
